@@ -1,0 +1,42 @@
+stages:
+  - build
+  - push
+  - deploy
+
+variables:
+  PROJECT_ID: "<YOUR_GCP_PROJECT_ID>"
+  REGION: "asia-southeast2"
+  REPO: "hello-world"
+  IMAGE: "hello-app"
+  SERVICE: "hello-service"
+
+default:
+  image: google/cloud-sdk:latest
+  tags: ["runner-dev"]   # semua job pakai runner-dev
+  only:
+    - main
+
+before_script:
+  # Aktifkan GCP auth
+  - echo $GCP_SA_KEY | base64 -d > ${CI_PROJECT_DIR}/gcp-key.json
+  - gcloud auth activate-service-account --key-file=${CI_PROJECT_DIR}/gcp-key.json
+  - gcloud config set project $PROJECT_ID
+  - gcloud config set run/region $REGION
+
+build:
+  stage: build
+  script:
+    - docker build -t $REGION-docker.pkg.dev/$PROJECT_ID/$REPO/$IMAGE:$CI_COMMIT_SHORT_SHA .
+
+push:
+  stage: push
+  needs: ["build"]
+  script:
+    - gcloud auth configure-docker $REGION-docker.pkg.dev -q
+    - docker push $REGION-docker.pkg.dev/$PROJECT_ID/$REPO/$IMAGE:$CI_COMMIT_SHORT_SHA
+
+deploy:
+  stage: deploy
+  needs: ["push"]
+  script:
+    - gcloud run deploy $SERVICE --image $REGION-docker.pkg.dev/$PROJECT_ID/$REPO/$IMAGE:$CI_COMMIT_SHORT_SHA --platform managed --allow-unauthenticated

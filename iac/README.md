@@ -35,7 +35,7 @@ region       = "asia-southeast2"
 
 db_name      = "nama_database"
 db_user      = "nama_user"
-db_password  = "superpassword123"
+db_password  = "db_password"
 
 
 Inisialisasi Terraform:
