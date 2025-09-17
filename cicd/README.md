@@ -19,26 +19,23 @@ gcloud services enable run.googleapis.com artifactregistry.googleapis.com
 - [Artifact Registry Writer]
 - [Cloud Run Admin]
 - [Service Account User]
-- [Tambahkan key JSON ke GitLab CI/CD variables:]
-- [GCP_SA_KEY (isi base64 dari file JSON service account).]
-- [PROJECT_ID, REGION, dll bisa juga diset via CI/CD Variables.]
+- [Tambahkan key JSON ke GitLab CI/CD variables: GCP_SA_KEY (isi base64 dari file JSON service account) dan PROJECT_ID, REGION, dll bisa juga diset via CI/CD Variables]
 
 ## GitLab Runner harus punya akses Docker (pakai executor docker).
 
 ## Pipeline Stages
 
-Build
-Build container image dari source code aplikasi.
+### Build
+#### Build container image dari source code aplikasi.
 
-Push
-Push image ke Artifact Registry:
-
+### Push
+#### Push image ke Artifact Registry:
+```
 $REGION-docker.pkg.dev/$PROJECT_ID/$REPO/$IMAGE:$CI_COMMIT_SHORT_SHA
+```
 
-
-Deploy
-Deploy image terbaru ke Cloud Run service $SERVICE.
-Hanya jalan di branch main.
+### Deploy
+#### Deploy image terbaru ke Cloud Run service $SERVICE. Hanya jalan di branch main.
 
 ## Run Manual Deploy (optional)
 ```
