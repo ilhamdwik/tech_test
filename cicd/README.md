@@ -16,10 +16,10 @@ gcloud services enable run.googleapis.com artifactregistry.googleapis.com
 
 ## Service Account dengan role:
 
-- [Artifact Registry Writer]
-- [Cloud Run Admin]
-- [Service Account User]
-- [Tambahkan key JSON ke GitLab CI/CD variables: GCP_SA_KEY (isi base64 dari file JSON service account) dan PROJECT_ID, REGION, dll bisa juga diset via CI/CD Variables]
+- Artifact Registry Writer
+- Cloud Run Admin
+- Service Account User
+- Tambahkan key JSON ke GitLab CI/CD variables: GCP_SA_KEY (isi base64 dari file JSON service account) dan PROJECT_ID, REGION, dll bisa juga diset via CI/CD Variables
 
 ## GitLab Runner harus punya akses Docker (pakai executor docker).
 
